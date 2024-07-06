@@ -1,8 +1,9 @@
 import React, { Component } from "react";
 import CardList from "./CardList";
 import SearchBox from "./SearchBox";
-import { robots } from "./robots";
+//import { robots } from "./robots";
 import "./App.css";
+import { robots } from "./robots";
 
 // creating a state object to describe what our state should be
 
@@ -20,11 +21,24 @@ class App extends Component {
   constructor() {
     super();
     this.state = {
-      //   robots: robots,
-      robots,
+      robots: [],
+      // robots: robots,
+      //robots,
       searchfield: "",
     };
   }
+  // Let's use life cycle hook to mount our page in the DOM.
+  // it mounts it automatically without calling it
+  componentDidMount() {
+    // using fetch function
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((response) => response.json())
+      .then((users) => this.setState({ robots: users }));
+  }
+
+  //   // let's access our robots now
+  //   this.setState({ robots: robots });
+  // }
 
   // a method to keep track of input change in the searchBox/ that manupulate
   // the data in the class object
@@ -43,13 +57,18 @@ class App extends Component {
         .toLowerCase()
         .includes(this.state.searchfield.toLowerCase());
     });
-    return (
-      <div className="tc">
-        <h1 className="f1">RoboFriends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
-        <CardList robots={filteredRobots} />;
-      </div>
-    );
+    // Where there is a long lag awaiting the response from the API use condition to show loading
+    if (this.state.robots.length === 0) {
+      return <h2>Loading... </h2>;
+    } else {
+      return (
+        <div className="tc">
+          <h1 className="f1">RoboFriends</h1>
+          <SearchBox searchChange={this.onSearchChange} />
+          <CardList robots={filteredRobots} />
+        </div>
+      );
+    }
   }
 }
 
