@@ -2,8 +2,8 @@ import React, { Component } from "react";
 import CardList from "./CardList";
 import SearchBox from "./SearchBox";
 //import { robots } from "./robots";
+import Scroll from "./Scroll";
 import "./App.css";
-import { robots } from "./robots";
 
 // creating a state object to describe what our state should be
 
@@ -65,7 +65,13 @@ class App extends Component {
         <div className="tc">
           <h1 className="f1">RoboFriends</h1>
           <SearchBox searchChange={this.onSearchChange} />
-          <CardList robots={filteredRobots} />
+          <Scroll>
+            {/* now the CardList componet is the children to Scroll componet
+            . even though in Scroll there is props passed but automatically every componet
+            in react has children
+            the scroll can use children as a way to render it's children. */}
+            <CardList robots={filteredRobots} />
+          </Scroll>
         </div>
       );
     }
