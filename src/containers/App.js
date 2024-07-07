@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import CardList from "./CardList";
-import SearchBox from "./SearchBox";
+import CardList from "../components/CardList";
+import SearchBox from "../components/SearchBox";
 //import { robots } from "./robots";
-import Scroll from "./Scroll";
+import Scroll from "../components/Scroll";
 import "./App.css";
 
 // creating a state object to describe what our state should be
@@ -52,29 +52,27 @@ class App extends Component {
   };
 
   render() {
-    const filteredRobots = this.state.robots.filter((robot) => {
-      return robot.name
-        .toLowerCase()
-        .includes(this.state.searchfield.toLowerCase());
+    // Here we use destructuring
+    const { robots, searchfield } = this.state;
+    const filteredRobots = robots.filter((robot) => {
+      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
     });
     // Where there is a long lag awaiting the response from the API use condition to show loading
-    if (this.state.robots.length === 0) {
-      return <h2>Loading... </h2>;
-    } else {
-      return (
-        <div className="tc">
-          <h1 className="f1">RoboFriends</h1>
-          <SearchBox searchChange={this.onSearchChange} />
-          <Scroll>
-            {/* now the CardList componet is the children to Scroll componet
+    return !robots.length ? (
+      <h2>Loading... </h2>
+    ) : (
+      <div className="tc">
+        <h1 className="f1">RoboFriends</h1>
+        <SearchBox searchChange={this.onSearchChange} />
+        <Scroll>
+          {/* now the CardList componet is the children to Scroll componet
             . even though in Scroll there is props passed but automatically every componet
             in react has children
             the scroll can use children as a way to render it's children. */}
-            <CardList robots={filteredRobots} />
-          </Scroll>
-        </div>
-      );
-    }
+          <CardList robots={filteredRobots} />
+        </Scroll>
+      </div>
+    );
   }
 }
 
