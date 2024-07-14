@@ -2,7 +2,7 @@ import React from "react";
 import ReactDOM from "react-dom/client";
 
 // to connect our app and the redux we have to import some API from the library we installed(react-redux)
-import { Provider, connect } from "react-redux";
+import { Provider } from "react-redux";
 
 // To create a store we need to import another module
 import { legacy_createStore } from "redux";
@@ -15,7 +15,7 @@ import { searchRobots } from "./reducers";
 
 // after importing the configStore let's create the store
 
-const store = legacy_createStore(searchRobots);
+const store = legacy_createStore(searchRobots); // we caould have the rootReducer, but now we have only one reducer that is searchRobots
 
 // then pass the store of our app to React to be rendered
 // and

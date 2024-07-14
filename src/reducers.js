@@ -13,11 +13,11 @@ const initialState = {
 // Now let's create a REDUCER that is pure function  and because we are going to
 //  to use in other places let's export it .
 
-//export const searchRobots = (state, action)  // but to avoid error tha may araise
+//export const searchRobots = (state, action)  // but to avoid error that may araise
 // let's use ES6 and assign state and action variables
 
 export const searchRobots = (state = initialState, action = {}) => {
-  // Here if we care an action and we receive an action that is related to searching robots we gona act upon the state
+  // Here if we care an action and we receive an action that is related to searching robots we gonna act upon the state
   // let's use SWITCH case Statement
   switch (
     action.type // SWITCH is recommanded as we need to keep on adding condtion that affect the state

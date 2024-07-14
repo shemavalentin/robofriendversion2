@@ -1,7 +1,7 @@
 // let's import the constant into action file
 import { CHANGE_SEARCH_FIELD } from "./constant";
 
-export const setSearchFeald = (text) => ({
+export const setSearchField = (text) => ({
   // Here used paranthesis to avoid the return statement
   // The action is made of TYPE, and the PAYLOAD
 
