@@ -3,6 +3,7 @@ import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 //import { robots } from "./robots";
 import Scroll from "../components/Scroll";
+import ErrorBoundary from "../components/ErrorBoundary";
 import "./App.css";
 
 // creating a state object to describe what our state should be
@@ -59,7 +60,7 @@ class App extends Component {
     });
     // Where there is a long lag awaiting the response from the API use condition to show loading
     return !robots.length ? (
-      <h2>Loading... </h2>
+      <h2>Loading...</h2>
     ) : (
       <div className="tc">
         <h1 className="f1">RoboFriends</h1>
@@ -69,7 +70,9 @@ class App extends Component {
             . even though in Scroll there is props passed but automatically every componet
             in react has children
             the scroll can use children as a way to render it's children. */}
+          {/* <ErrorBoundary> */}
           <CardList robots={filteredRobots} />
+          {/* </ErrorBoundary> */}
         </Scroll>
       </div>
     );
