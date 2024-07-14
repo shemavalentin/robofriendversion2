@@ -31,6 +31,7 @@ class App extends Component {
   // Let's use life cycle hook to mount our page in the DOM.
   // it mounts it automatically without calling it
   componentDidMount() {
+    // console.log(this.props.store.getState());
     // using fetch function
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())

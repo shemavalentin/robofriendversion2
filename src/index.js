@@ -3,16 +3,32 @@ import ReactDOM from "react-dom/client";
 
 // to connect our app and the redux we have to import some API from the library we installed(react-redux)
 import { Provider, connect } from "react-redux";
+
+// To create a store we need to import another module
+import { legacy_createStore } from "redux";
 import "./index.css";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
 import "tachyons";
 import { robots } from "./robots";
+import { searchRobots } from "./reducers";
 
+// after importing the configStore let's create the store
+
+const store = legacy_createStore(searchRobots);
+
+// then pass the store of our app to React to be rendered
+// and
+// Remember we can remove the App component as one that possess our state and define it
+// our state then pass the store as a prop to react to render it.
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
+  // The provider component used is for passing down the store to other components down the tree.
+  // then the store is created by the rootReducer or whatever reducer using the legacy_createStore.
   <React.StrictMode>
-    <App robots={robots} />
+    <Provider store={store}>
+      <App />
+    </Provider>
   </React.StrictMode>
 );
 
