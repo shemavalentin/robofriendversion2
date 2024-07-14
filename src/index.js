@@ -1,5 +1,8 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
+
+// to connect our app and the redux we have to import some API from the library we installed(react-redux)
+import { Provider, connect } from "react-redux";
 import "./index.css";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
