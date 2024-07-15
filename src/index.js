@@ -10,20 +10,20 @@ import "./index.css";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
 import "tachyons";
-import { robots } from "./robots";
+//import { robots } from "./robots";
 import { searchRobots } from "./reducers";
 
 // after importing the configStore let's create the store
 
-const store = legacy_createStore(searchRobots); // we caould have the rootReducer, but now we have only one reducer that is searchRobots
+const store = legacy_createStore(searchRobots); // we could have the rootReducer, but now we have only one reducer that is searchRobots
 
-// then pass the store of our app to React to be rendered
+// then pass the store of our App component as a prop to React to be rendered
 // and
 // Remember we can remove the App component as one that possess our state and define it
 // our state then pass the store as a prop to react to render it.
 const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
-  // The provider component used is for passing down the store to other components down the tree.
+  // The provider component used to passe down the store to other components down the tree.
   // then the store is created by the rootReducer or whatever reducer using the legacy_createStore.
   <React.StrictMode>
     <Provider store={store}>

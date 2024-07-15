@@ -1,17 +1,19 @@
 import React, { Component } from "react";
 
 //Now let's import connect from react-redux to connect the container to action component
+// action is one that triggers changes and initial state and other states are defined here
+// in containers or smart component.
 import { connect } from "react-redux"; // implemented down
 import CardList from "../components/CardList";
 import SearchBox from "../components/SearchBox";
 //import { robots } from "./robots";
 import Scroll from "../components/Scroll";
-import ErrorBoundary from "../components/ErrorBoundary";
+//import ErrorBoundary from "../components/ErrorBoundary";
 import "./App.css";
 
 // as the Provider component is now working but we need to connect it to
-// contianners or smart objects or states components. Now we have to import
-// action component in here.
+// contianners or smart objects or states components to trickle down actions to the wraped component(s).
+//Now we have to import action component in here.
 
 import { setSearchField } from "../action";
 
@@ -22,23 +24,26 @@ import { setSearchField } from "../action";
 //   searchField: "",
 // };
 
-// Let's now tell the smart (App in this case)component what sate it should listen to
+// Let's now tell the smart (App in this case)component what state it should listen to
 
 const mapStateToProps = (state) => {
   return {
-    searchfield: state.searchRobots.searchfield, // the searchField here is the state from reducer(initial state)
+    //searchField: state.searchRobots.searchField => we can use this when we have many reducers for different peaces of states but now we have one.
+    // in order for it to work we have to use the following.
+    searchField: state.searchField, // the searchField here is the state from reducer(initial state)
   }; // searchRobots is from reducer and we created the store using the searchRobots(it is the only one reducer)
   // and it is considered as the root reducer.
 };
 
-// Telling the App which action or dispact it should listen to
+// Telling the App which action or dispatch it should listen to
 const mapDispatchToProps = (dispatch) => {
   // dispatch here is what triggers the action.(Flux pattern). in order to
-  // to send the action we needs dispatch function so that the action can get dispatched to the reducer
+  // send the action we needs dispatch function so that the action can get dispatched to the reducer
   return {
     // onSearchChange can be any name but let use the one we have
     onSearchChange: (event) => {
-      dispatch(setSearchField(event.target.value)); // setSearchField is an action to be dispatched.
+      dispatch(setSearchField(event.target.value)); // setSearchField is an action to be dispatched and it will be
+      // listening to the text(that the user is typing. meanis (event.target.value)).
     },
   };
 };
@@ -54,7 +59,7 @@ class App extends Component {
       robots: [],
       // robots: robots,
       //robots,
-      searchfield: "",
+      // searchfield: "",
     };
   }
   // Let's use life cycle hook to mount our page in the DOM.
@@ -71,8 +76,10 @@ class App extends Component {
   //   this.setState({ robots: robots });
   // }
 
-  // a method to keep track of input change in the searchBox/ that manupulate
+  // A method to keep track of input change in the searchBox/ that manupulate
   // the data in the class object
+
+  /* THE onSearchChange is removed as it is comming down as props from mapDispatchToProps
 
   // and used arrow function to refere to App object not the component object (local environment context)
   onSearchChange = (event) => {
@@ -81,12 +88,14 @@ class App extends Component {
 
     //console.log(filteredRobots);
   };
-
+*/
   render() {
     // Here we use destructuring
-    const { robots, searchfield } = this.state;
+    //const { robots, searchfield } = this.state;
+    const { robots } = this.state;
+    const { searchField, onSearchChange } = this.props; // the searchField and onSearchChange will be passed as props
     const filteredRobots = robots.filter((robot) => {
-      return robot.name.toLowerCase().includes(searchfield.toLowerCase());
+      return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
     // Where there is a long lag awaiting the response from the API use condition to show loading
     return !robots.length ? (
@@ -94,7 +103,7 @@ class App extends Component {
     ) : (
       <div className="tc">
         <h1 className="f1">RoboFriends</h1>
-        <SearchBox searchChange={this.onSearchChange} />
+        <SearchBox searchChange={onSearchChange} />
         <Scroll>
           {/* now the CardList componet is the children to Scroll componet
             . even though in Scroll there is props passed but automatically every componet

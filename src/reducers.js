@@ -11,7 +11,7 @@ const initialState = {
 // CREATING A REDUCER
 
 // Now let's create a REDUCER that is pure function  and because we are going to
-//  to use in other places let's export it .
+//  use it in other places let's export it .
 
 //export const searchRobots = (state, action)  // but to avoid error that may araise
 // let's use ES6 and assign state and action variables
@@ -20,7 +20,7 @@ export const searchRobots = (state = initialState, action = {}) => {
   // Here if we care an action and we receive an action that is related to searching robots we gonna act upon the state
   // let's use SWITCH case Statement
   switch (
-    action.type // SWITCH is recommanded as we need to keep on adding condtion that affect the state
+    action.type // SWITCH is recommanded as we need to keep on adding condtion that affect the state and it is recommended in redux tutorials
   ) {
     case CHANGE_SEARCH_FIELD:
       // NOTE THAT HERE IT TURNS TO THE 3 PRONCIPLES( Single source of truth, State is read only, Change using pure function)
