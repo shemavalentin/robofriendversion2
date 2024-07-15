@@ -1,5 +1,12 @@
 // let's import the constant into action file
-import { CHANGE_SEARCH_FIELD } from "./constant";
+//import { CHANGE_SEARCH_FIELD } from "./constant";
+
+import {
+  CHANGE_SEARCH_FIELD,
+  REQUEST_ROBOTS_SUCCESS,
+  REQUEST_ROBOTS_FAILED,
+  REQUEST_ROBOTS_PENDING,
+} from "./constant";
 
 export const setSearchField = (text) => ({
   // Here used paranthesis to avoid the return statement
@@ -21,3 +28,30 @@ trick and most redux demos have a constant file as well where they keep track
 of all these actions and it's also nice to have a file where you can see what 
 your actions are line by line because most apps will have more than just one action
 */
+
+// creating actions for the above added constants
+
+//export const requestRobots = (dispatch) => {       // this turned into a clausure function (a function that returns anothe function )
+export const requestRobots = () => (dispatch) => {
+  // we passed dispatch here cze we need to dispatch actions to reducer
+  // and when using a middleware we wait them and dispatch then after. that's why we passed a dispatch
+
+  dispatch({
+    type: REQUEST_ROBOTS_PENDING,
+    // payload: '' because it's pending, we don't have a payload yet.
+  });
+
+  //we also have an API that we need to call and wait
+  fetch("https://jsonplaceholder.typicode.com/users")
+    .then((response) => response.json())
+    // here we have .then() and .catch()
+    .then((data) => dispatch({ type: REQUEST_ROBOTS_SUCCESS, payload: data }))
+    .catch((error) =>
+      dispatch({ type: REQUEST_ROBOTS_FAILED, payload: error })
+    );
+
+  // Technically speaking, here we are returning nothing
+};
+
+// Now both of our actions do not have a function,
+// let's first update the state in App.js

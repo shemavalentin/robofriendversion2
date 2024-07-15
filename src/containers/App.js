@@ -15,7 +15,7 @@ import "./App.css";
 // contianners or smart objects or states components to trickle down actions to the wraped component(s).
 //Now we have to import action component in here.
 
-import { setSearchField } from "../action";
+import { setSearchField, requestRobots } from "../action";
 
 // creating a state object to describe what our state should be
 
@@ -30,8 +30,18 @@ const mapStateToProps = (state) => {
   return {
     //searchField: state.searchRobots.searchField => we can use this when we have many reducers for different peaces of states but now we have one.
     // in order for it to work we have to use the following.
-    searchField: state.searchField, // the searchField here is the state from reducer(initial state)
-  }; // searchRobots is from reducer and we created the store using the searchRobots(it is the only one reducer)
+
+    // searchField: state.searchField, // the searchField here is the state from reducer(initial state)
+    // because we added another reducer, we need it
+    searchField: state.searchRobots.searchField,
+
+    // updating/ mapping our state with the second reducer created
+    robots: state.requestRobots.robots,
+    isPending: state.requestRobots.isPending,
+    error: state.requestRobots.error,
+  };
+
+  // searchRobots is from reducer and we created the store using the searchRobots(it is the only one reducer)
   // and it is considered as the root reducer.
 };
 
@@ -41,10 +51,15 @@ const mapDispatchToProps = (dispatch) => {
   // send the action we needs dispatch function so that the action can get dispatched to the reducer
   return {
     // onSearchChange can be any name but let use the one we have
-    onSearchChange: (event) => {
-      dispatch(setSearchField(event.target.value)); // setSearchField is an action to be dispatched and it will be
-      // listening to the text(that the user is typing. meanis (event.target.value)).
-    },
+    onSearchChange: (event) => dispatch(setSearchField(event.target.value)),
+
+    // setSearchField is an action to be dispatched and it will be
+    // listening to the text(that the user is typing. meanis (event.target.value)).
+
+    // on the following action to be dispatched, we don't need to dispact an action.
+    // we need to return a function as the thunk middleware is waiting for a function instead of an object
+
+    onRequestRobots: () => dispatch(requestRobots()), // let's now go to function and return a function
   };
 };
 class App extends Component {
@@ -53,23 +68,31 @@ class App extends Component {
   // Now we have our state. State is something that can change.
   // it can change our APP/ affect our APP and usually live in the parent component
   // the component that passes state to different components.
-  constructor() {
-    super();
-    this.state = {
-      robots: [],
-      // robots: robots,
-      //robots,
-      // searchfield: "",
-    };
-  }
-  // Let's use life cycle hook to mount our page in the DOM.
+
+  // constructor() {
+  // super();
+  // this.state = {
+  //   robots: [],
+  // robots: robots,
+  //robots,
+  // searchfield: "",
+  //   };
+  // }
+  // // Let's use life cycle hook to mount our page in the DOM.
   // it mounts it automatically without calling it
   componentDidMount() {
     // console.log(this.props.store.getState());
     // using fetch function
+
+    // we don't need this again as this is being passed as props
+    /*
     fetch("https://jsonplaceholder.typicode.com/users")
       .then((response) => response.json())
       .then((users) => this.setState({ robots: users }));
+      */
+
+    // we do this instead
+    this.props.onRequestRobots();
   }
 
   //   // let's access our robots now
@@ -87,18 +110,21 @@ class App extends Component {
     this.setState({ searchfield: event.target.value });
 
     //console.log(filteredRobots);
+
+    
   };
 */
+
   render() {
     // Here we use destructuring
     //const { robots, searchfield } = this.state;
-    const { robots } = this.state;
-    const { searchField, onSearchChange } = this.props; // the searchField and onSearchChange will be passed as props
+    // const { robots } = this.state;  // no state here again
+    const { searchField, onSearchChange, robots, isPending } = this.props; // the searchField and onSearchChange will be passed as props
     const filteredRobots = robots.filter((robot) => {
       return robot.name.toLowerCase().includes(searchField.toLowerCase());
     });
     // Where there is a long lag awaiting the response from the API use condition to show loading
-    return !robots.length ? (
+    return isPending ? (
       <h2>Loading...</h2>
     ) : (
       <div className="tc">

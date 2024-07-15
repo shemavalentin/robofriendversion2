@@ -1,10 +1,17 @@
 // as we are going to need the action let's import it here.
-import { CHANGE_SEARCH_FIELD } from "./constant";
+//import { CHANGE_SEARCH_FIELD } from "./constant";
+
+import {
+  CHANGE_SEARCH_FIELD,
+  REQUEST_ROBOTS_PENDING,
+  REQUEST_ROBOTS_SUCCESS,
+  REQUEST_ROBOTS_FAILED,
+} from "./constant";
 
 // Let's create the initial state as we have it in the app.js
 // Note that it is the one we will have in the store initially
 
-const initialState = {
+const initialStateSearch = {
   searchField: "",
 };
 
@@ -16,7 +23,7 @@ const initialState = {
 //export const searchRobots = (state, action)  // but to avoid error that may araise
 // let's use ES6 and assign state and action variables
 
-export const searchRobots = (state = initialState, action = {}) => {
+export const searchRobots = (state = initialStateSearch, action = {}) => {
   // Here if we care an action and we receive an action that is related to searching robots we gonna act upon the state
   // let's use SWITCH case Statement
   switch (
@@ -34,6 +41,38 @@ export const searchRobots = (state = initialState, action = {}) => {
 
     // a pure function always return something
 
+    default:
+      return state;
+  }
+};
+
+// creating the initialstate for robots
+
+const initialStateRobots = {
+  isPending: false,
+  robots: [],
+  error: "",
+};
+//========== Let's create another reducer apart to not combine them
+
+export const requestRobots = (state = initialStateRobots, action = {}) => {
+  switch (action.type) {
+    case REQUEST_ROBOTS_PENDING:
+      return Object.assign({}, state, { isPending: true }); // here created an object isPending and set it to true
+
+    case REQUEST_ROBOTS_SUCCESS:
+      return Object.assign({}, state, {
+        robots: action.payload,
+        isPending: false,
+      });
+
+    case REQUEST_ROBOTS_FAILED:
+      return Object.assign({}, state, {
+        error: action.payload,
+        isPending: false,
+      });
+
+    //alwayse when a reducer does not return anything it returns the default state.
     default:
       return state;
   }
