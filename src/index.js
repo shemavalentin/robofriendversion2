@@ -5,7 +5,11 @@ import ReactDOM from "react-dom/client";
 import { Provider } from "react-redux";
 
 // To create a store we need to import another module
-import { legacy_createStore } from "redux";
+import { legacy_createStore, applyMiddleware } from "redux";
+
+// importing the package from redux-logger we installed
+import { createLogger } from "redux-logger";
+
 import "./index.css";
 import App from "./containers/App";
 import reportWebVitals from "./reportWebVitals";
@@ -13,9 +17,11 @@ import "tachyons";
 //import { robots } from "./robots";
 import { searchRobots } from "./reducers";
 
-// after importing the configStore let's create the store
+// let's create a logger now
+const logger = createLogger(); // after creating it let's apply it to our app by adding applyMiddleware
 
-const store = legacy_createStore(searchRobots); // we could have the rootReducer, but now we have only one reducer that is searchRobots
+// after importing the configStore let's create the store
+const store = legacy_createStore(searchRobots, applyMiddleware(logger)); // we could have the rootReducer, but now we have only one reducer that is searchRobots
 
 // then pass the store of our App component as a prop to React to be rendered
 // and
