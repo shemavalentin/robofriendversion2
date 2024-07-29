@@ -53,7 +53,7 @@ const initialStateRobots = {
   robots: [],
   error: "",
 };
-//========== Let's create another reducer apart to not combine them
+//========== Let's create another reducer apart to not combine them.
 
 export const requestRobots = (state = initialStateRobots, action = {}) => {
   switch (action.type) {
@@ -68,7 +68,7 @@ export const requestRobots = (state = initialStateRobots, action = {}) => {
 
     case REQUEST_ROBOTS_FAILED:
       return Object.assign({}, state, {
-        error: action.payload,
+        error: action.payload, // what need to be changed
         isPending: false,
       });
 
